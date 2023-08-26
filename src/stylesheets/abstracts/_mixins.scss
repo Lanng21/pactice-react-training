@@ -1,0 +1,32 @@
+@use 'variables' as *;
+@use 'functions' as *;
+@use 'breakpoints' as *;
+
+// Media-Query Mixin
+@mixin tablet {
+  @media screen and (max-width: $medium) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (max-width: $extra-lager) {
+    @content;
+  }
+}
+
+@mixin extra-desktop {
+  @media screen and (max-width: $extra-lager-larger) {
+    @content;
+  }
+}
+
+@mixin line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $background-color;
+  color: $color-line;
+  padding: 0 15px;
+}

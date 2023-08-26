@@ -1,0 +1,14 @@
+@use '../abstracts/' as *;
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  .header {
+    margin-top: 50px;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 81px;
+    color: #0c0033;
+  }
+}
