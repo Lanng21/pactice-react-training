@@ -14,16 +14,16 @@
 }
 
 .primary {
-  background-color: #ffffff;
-  color: #00072b;
+  background-color: $primary-color;
+  color: $secondary-color;
 }
 
 .secondary {
-  background-color: #7fc008;
-  color: #ffffff;
+  background-color: $tertiary-color;
+  color: $primary-color;
 }
 
 .error {
-  background-color: #db303f;
-  color: #fff;
+  background-color: $quaternary-color;
+  color: $primary-color;
 }
