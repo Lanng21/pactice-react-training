@@ -11,9 +11,3 @@ export interface IProduct {
 export interface ProductsState {
   products: IProduct[];
 }
-
-export enum ProductsActionTypes {
-  FETCH_PRODUCTS = 'FETCH_PRODUCTS',
-  ADD_PRODUCT = 'ADD_PRODUCT',
-  // ... other action types
-}
