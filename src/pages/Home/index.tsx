@@ -101,7 +101,7 @@ function Home() {
 
   return (
     <div className="container">
-      <h1>Management</h1>
+      <h1 className="title">Management</h1>
       <div className="button-add">
         <Button onClick={openModal}>Add new product</Button>
       </div>

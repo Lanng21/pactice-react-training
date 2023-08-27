@@ -4,20 +4,20 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-  h1 {
+  title {
     margin-top: 50px;
     font-weight: 700;
     font-size: 60px;
     line-height: 81px;
-    color: #0c0033;
+    color: $text-color;
   }
 
   .button-add {
     display: flex;
     justify-content: flex-end;
     Button {
-      border: 1px solid #7fc008;
-      color: #7fc008;
+      border: 1px solid $tertiary-color;
+      color: $tertiary-color;
       border-radius: 4px;
       padding: 10px 18px;
     }
