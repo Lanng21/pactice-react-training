@@ -1,34 +1,34 @@
-import React from 'react';
+import React, { memo } from 'react';
+// types
 import { IProduct } from '../../types/Product';
 
-interface TableProps {
-  products: IProduct[];
+interface Column {
+  key: string;
+  header: string;
+  render: (data: IProduct) => React.ReactNode;
 }
 
-function Table({ products }: TableProps) {
+interface TableProps {
+  columns: Column[];
+  data: IProduct[];
+}
+
+function Table({ columns, data }: TableProps) {
   return (
     <table>
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Status</th>
-          <th>Type</th>
-          <th>Quantity</th>
-          <th>Brand</th>
-          <th>Price</th>
-          <th>Action</th>
+          {columns.map((column) => (
+            <th key={column.key}>{column.header}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
-        {products.map((product) => (
-          <tr key={product.id}>
-            <td>{product.name}</td>
-            <td>{product.quantity}</td>
-            <td>{product.price}</td>
-            <td>{product.status}</td>
-            <td>{product.type}</td>
-            <td>{product.brand}</td>
-            <td>{product.brandImage}</td>
+        {data.map((row) => (
+          <tr key={row.id}>
+            {columns.map((column) => (
+              <td key={column.key}>{column.render(row)}</td>
+            ))}
           </tr>
         ))}
       </tbody>
@@ -36,4 +36,4 @@ function Table({ products }: TableProps) {
   );
 }
 
-export default Table;
+export default memo(Table);

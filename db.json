@@ -1,3 +1,14 @@
 {
-  "products": []
+  "products": [
+    {
+      "name": "Nguyen  Thi  Mai Lan",
+      "quantity": "2000",
+      "price": "20000",
+      "status": "available",
+      "type": "electronic",
+      "brand": "ddd",
+      "brandImage": "",
+      "id": 1693128399752
+    }
+  ]
 }

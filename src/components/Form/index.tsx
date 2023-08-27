@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 // components
 import Button from '../Button';
 // types
 import { IProduct } from '../../types/Product';
-// import { IFormData } from '../../types/Product';
-
 // icon
 import Clear from '../../assets/images/x-close.svg';
 
 interface ModalFormProps {
   onClose: () => void;
   onSubmit: (formData: IProduct) => void;
+  selectedProduct: IProduct;
 }
 
-function ModalForm({ onClose, onSubmit }: ModalFormProps) {
+function ModalForm({ onClose, onSubmit, selectedProduct }: ModalFormProps) {
   const [formData, setFormData] = useState<IProduct>({
     name: '',
     quantity: 0,
@@ -24,6 +23,12 @@ function ModalForm({ onClose, onSubmit }: ModalFormProps) {
     brandImage: '',
     id: 0,
   });
+
+  useEffect(() => {
+    if (selectedProduct) {
+      setFormData(selectedProduct);
+    }
+  }, [selectedProduct]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -92,9 +97,8 @@ function ModalForm({ onClose, onSubmit }: ModalFormProps) {
               value={formData.status}
               onChange={handleInputChange}
             >
-              <option value="">Select status</option>
               <option value="available">Available</option>
-              <option value="outOfStock">Out of Stock</option>
+              <option value="outOfStock">Sold out</option>
             </select>
           </label>
           <label htmlFor="type">
@@ -157,4 +161,4 @@ function ModalForm({ onClose, onSubmit }: ModalFormProps) {
   );
 }
 
-export default ModalForm;
+export default memo(ModalForm);
