@@ -3,12 +3,22 @@
     {
       "name": "Nguyen  Thi  Mai Lan",
       "quantity": "2000",
-      "price": "20000",
-      "status": "available",
-      "type": "electronic",
-      "brand": "ddd",
+      "price": 0,
+      "status": "",
+      "type": "",
+      "brand": "",
       "brandImage": "",
-      "id": 1693128399752
+      "id": 1693132548115
+    },
+    {
+      "name": "",
+      "quantity": 0,
+      "price": 0,
+      "status": "",
+      "type": "",
+      "brand": "",
+      "brandImage": "",
+      "id": 1693133955730
     }
   ]
 }

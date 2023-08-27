@@ -1,94 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// store
-import {
-  setProducts,
-  addProduct,
-  deleteProduct,
-  updateProduct,
-} from '../../store/product/productSlice';
-import {
-  fetchProducts,
-  createProduct,
-  deleteProductFromServer,
-  updateProductOnServer,
-} from '../../store/product/api';
-import { RootState } from '../../store/product/store';
-import { IProduct } from '../../types/Product';
-
+import React, { useCallback, useState } from 'react';
+// hooks
+import { useProductContext } from '../../hooks/ProductContext';
 // components
 import ModalForm from '../../components/Form';
 import Button from '../../components/Button';
 import Table from '../../components/Table';
+// types
+import { IProduct } from '../../types/Product';
 
 function Home() {
-  const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products);
+  const { products, addProduct, updateProduct, deleteProduct } =
+    useProductContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const productsData: IProduct[] = await fetchProducts();
-        dispatch(setProducts(productsData));
-      } catch (error) {
-        throw new Error('Failed to fetch products');
-      }
-    }
-    fetchData();
-  }, [dispatch]);
-
-  const openModal = () => {
+  const openModal = useCallback(() => {
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
     setSelectedProduct(null);
-  };
+  }, []);
 
-  const handleSubmit = async (formData: IProduct) => {
-    if (selectedProduct) {
-      try {
-        const updatedProduct: IProduct = {
-          ...selectedProduct,
-          ...formData,
-        };
-        await updateProductOnServer(updatedProduct);
-        dispatch(updateProduct(updatedProduct));
-      } catch (error) {
-        throw new Error('Failed to update product');
-      }
-    } else {
-      try {
+  const handleSubmit = useCallback(
+    (formData: IProduct) => {
+      if (selectedProduct) {
+        updateProduct({ ...selectedProduct, ...formData });
+      } else {
         const newProduct: IProduct = {
           ...formData,
           id: Date.now(),
         };
-        await createProduct(newProduct);
-        dispatch(addProduct(newProduct));
-      } catch (error) {
-        throw new Error('Failed to create product');
+        addProduct(newProduct);
       }
-    }
-    closeModal();
-  };
+      closeModal();
+    },
+    [addProduct, closeModal, selectedProduct, updateProduct],
+  );
 
-  const handleEdit = (product: IProduct) => {
+  const handleEdit = useCallback((product: IProduct) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleDelete = async (productId: number) => {
-    try {
-      await deleteProductFromServer(productId);
-      dispatch(deleteProduct(productId));
-    } catch (error) {
-      throw new Error('Failed to delete product');
-    }
-  };
+  const handleDelete = useCallback(
+    (productId: number) => {
+      deleteProduct(productId);
+    },
+    [deleteProduct],
+  );
 
   const columns = [
     {

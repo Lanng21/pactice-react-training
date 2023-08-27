@@ -11,3 +11,9 @@ export interface IProduct {
 export interface ProductsState {
   products: IProduct[];
 }
+
+export interface IColumn {
+  key: string;
+  header: string;
+  render: (data: IProduct) => React.ReactNode;
+}
