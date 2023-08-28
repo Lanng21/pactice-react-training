@@ -3,6 +3,7 @@ import React, { ReactNode, memo } from 'react';
 // icon
 import Clear from '../../assets/images/x-close.svg';
 import Delete from '../../assets/images/Featured icon.png';
+import Button from '../Button';
 
 interface ModalFormProps {
   children: ReactNode;
@@ -31,9 +32,9 @@ const ModalForm = ({
               <img src={Delete} alt="delete" />
             </figure>
           )}
-          <button type="button" onClick={handleCancelClick}>
+          <Button onClick={handleCancelClick}>
             <img src={Clear} alt="close" />
-          </button>
+          </Button>
         </div>
         {children}
       </div>

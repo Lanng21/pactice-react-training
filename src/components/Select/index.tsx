@@ -9,7 +9,14 @@ interface SelectProps {
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-function Select({ children, label, id, name, value, onChange }: SelectProps) {
+const Select = ({
+  children,
+  label,
+  id,
+  name,
+  value,
+  onChange,
+}: SelectProps) => {
   return (
     <label htmlFor={id}>
       {label}
@@ -18,6 +25,6 @@ function Select({ children, label, id, name, value, onChange }: SelectProps) {
       </select>
     </label>
   );
-}
+};
 
 export default Select;

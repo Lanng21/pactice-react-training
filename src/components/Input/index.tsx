@@ -7,7 +7,6 @@ interface IInputProps {
   type: string;
   name: string;
   label: string;
-
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
