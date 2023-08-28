@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
 import ModalForm from '../../../../components/Form';
@@ -37,24 +37,25 @@ const AddProduct = ({
     }
   }, [selectedProduct]);
 
-  const handleCancelClick = () => {
+  const handleCancelClick = useCallback(() => {
     onClose();
-  };
+  }, [onClose]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    },
+    [],
+  );
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     onSubmit(formData);
     onClose();
-  };
+  }, [onSubmit, formData, onClose]);
 
   return (
     <ModalForm onClose={onClose} title="Add new product">

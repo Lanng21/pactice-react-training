@@ -8,13 +8,14 @@ import React, {
   useCallback,
 } from 'react';
 
-// api
+// services
 import {
   fetchProducts,
   createProduct,
   deleteProductFromServer,
   updateProductOnServer,
 } from '../store/product/api';
+
 // types
 import { IProduct } from '../types/Product';
 
@@ -60,38 +61,47 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     fetchData();
   }, []);
 
-  const addProduct = useCallback(async (newProduct: IProduct) => {
-    try {
-      await createProduct(newProduct);
-      setProducts((prevProducts) => [...prevProducts, newProduct]);
-    } catch (error) {
-      throw new Error('Failed to create product');
-    }
-  }, []);
+  const addProduct = useCallback(
+    async (newProduct: IProduct) => {
+      try {
+        await createProduct(newProduct);
+        setProducts((prevProducts) => [...prevProducts, newProduct]);
+      } catch (error) {
+        throw new Error('Failed to create product');
+      }
+    },
+    [setProducts],
+  );
 
-  const updateProduct = useCallback(async (updatedProduct: IProduct) => {
-    try {
-      await updateProductOnServer(updatedProduct);
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === updatedProduct.id ? updatedProduct : product,
-        ),
-      );
-    } catch (error) {
-      throw new Error('Failed to update product');
-    }
-  }, []);
+  const updateProduct = useCallback(
+    async (updatedProduct: IProduct) => {
+      try {
+        await updateProductOnServer(updatedProduct);
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product.id === updatedProduct.id ? updatedProduct : product,
+          ),
+        );
+      } catch (error) {
+        throw new Error('Failed to update product');
+      }
+    },
+    [setProducts],
+  );
 
-  const deleteProduct = useCallback(async (productId: number) => {
-    try {
-      await deleteProductFromServer(productId);
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product.id !== productId),
-      );
-    } catch (error) {
-      throw new Error('Failed to delete product');
-    }
-  }, []);
+  const deleteProduct = useCallback(
+    async (productId: number) => {
+      try {
+        await deleteProductFromServer(productId);
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== productId),
+        );
+      } catch (error) {
+        throw new Error('Failed to delete product');
+      }
+    },
+    [setProducts],
+  );
 
   const contextValue = useMemo(
     () => ({

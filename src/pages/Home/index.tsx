@@ -102,18 +102,15 @@ const Home = () => {
         header: 'Action',
         render: (product: IProduct) => (
           <div className="action-buttons">
-            <button type="button" onClick={() => handleEdit(product)}>
-              edit
-            </button>
-            <button
-              type="button"
+            <Button onClick={() => handleEdit(product)}>edit</Button>
+            <Button
               onClick={() => {
                 setSelectedProduct(product);
                 setIsDeleteConfirmationModalOpen(true);
               }}
             >
               delete
-            </button>
+            </Button>
           </div>
         ),
       },
