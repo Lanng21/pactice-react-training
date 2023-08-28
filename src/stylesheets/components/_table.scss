@@ -1,4 +1,5 @@
-/* Style cho table */
+@use '../abstracts/' as *;
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -17,9 +18,5 @@ table th {
 }
 
 table tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: $background-color;
 }
-
-// table tr:hover {
-//   background-color: #e0e0e0;
-// }
