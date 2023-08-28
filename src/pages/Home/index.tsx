@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 // hooks
 import { useProductContext } from '../../hooks/ProductContext';
@@ -65,58 +65,61 @@ const Home = () => {
     setIsModalOpen(true);
   }, []);
 
-  const columns = [
-    {
-      key: 'name',
-      header: 'Product',
-      render: (product: IProduct) => product.name,
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      render: (product: IProduct) => product.status,
-    },
-    {
-      key: 'type',
-      header: 'Type',
-      render: (product: IProduct) => product.type,
-    },
-    {
-      key: 'quantity',
-      header: 'Quantity',
-      render: (product: IProduct) => product.quantity,
-    },
-    {
-      key: 'brand',
-      header: 'Brand',
-      render: (product: IProduct) => product.brand,
-    },
-    {
-      key: 'price',
-      header: 'Price',
-      render: (product: IProduct) => product.price,
-    },
-    {
-      key: 'action',
-      header: 'Action',
-      render: (product: IProduct) => (
-        <div className="action-buttons">
-          <button type="button" onClick={() => handleEdit(product)}>
-            edit
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedProduct(product);
-              setIsDeleteConfirmationModalOpen(true);
-            }}
-          >
-            delete
-          </button>
-        </div>
-      ),
-    },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        key: 'name',
+        header: 'Product',
+        render: (product: IProduct) => product.name,
+      },
+      {
+        key: 'status',
+        header: 'Status',
+        render: (product: IProduct) => product.status,
+      },
+      {
+        key: 'type',
+        header: 'Type',
+        render: (product: IProduct) => product.type,
+      },
+      {
+        key: 'quantity',
+        header: 'Quantity',
+        render: (product: IProduct) => product.quantity,
+      },
+      {
+        key: 'brand',
+        header: 'Brand',
+        render: (product: IProduct) => product.brand,
+      },
+      {
+        key: 'price',
+        header: 'Price',
+        render: (product: IProduct) => product.price,
+      },
+      {
+        key: 'action',
+        header: 'Action',
+        render: (product: IProduct) => (
+          <div className="action-buttons">
+            <button type="button" onClick={() => handleEdit(product)}>
+              edit
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedProduct(product);
+                setIsDeleteConfirmationModalOpen(true);
+              }}
+            >
+              delete
+            </button>
+          </div>
+        ),
+      },
+    ],
+    [handleEdit],
+  );
 
   return (
     <div className="container">
