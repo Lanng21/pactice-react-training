@@ -2,23 +2,13 @@
   "products": [
     {
       "name": "Nguyen  Thi  Mai Lan",
-      "quantity": "2000",
-      "price": 0,
-      "status": "",
-      "type": "",
-      "brand": "",
-      "brandImage": "",
-      "id": 1693132548115
-    },
-    {
-      "name": "",
       "quantity": 0,
       "price": 0,
-      "status": "",
-      "type": "",
-      "brand": "",
-      "brandImage": "",
-      "id": 1693133955730
+      "status": "sold-out",
+      "type": "clothing",
+      "brand": "ddd",
+      "brandImage": "ssss",
+      "id": 1693230003807
     }
   ]
 }

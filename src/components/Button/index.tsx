@@ -5,22 +5,14 @@ interface ButtonProps {
   size?: 'large' | 'medium' | 'small';
   kind?: 'primary' | 'secondary' | 'error';
   className?: string;
-  type?: 'submit' | 'button';
   onClick: () => void;
 }
 
-function Button({
-  children,
-  size,
-  kind,
-  className,
-  type,
-  onClick,
-}: ButtonProps) {
+function Button({ children, size, kind, className, onClick }: ButtonProps) {
   return (
     <button
       className={`${size} ${kind} ${className}`}
-      type={type ? 'submit' : 'button'}
+      type="button"
       onClick={onClick}
     >
       {children}
@@ -32,7 +24,6 @@ Button.defaultProps = {
   size: 'medium',
   kind: 'primary',
   className: '',
-  type: 'button',
   children: '',
 };
 

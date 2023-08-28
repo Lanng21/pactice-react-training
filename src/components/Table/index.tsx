@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+
 // types
 import { IProduct } from '../../types/Product';
 
@@ -27,7 +28,15 @@ function Table({ columns, data }: TableProps) {
         {data.map((row) => (
           <tr key={row.id}>
             {columns.map((column) => (
-              <td key={column.key}>{column.render(row)}</td>
+              <td key={column.key}>
+                <span
+                  className={`select-option ${
+                    row[column.key as keyof IProduct] || ''
+                  } ${column.key === 'quantity' ? 'quantity-column' : ''}`}
+                >
+                  {column.render(row)}
+                </span>
+              </td>
             ))}
           </tr>
         ))}
