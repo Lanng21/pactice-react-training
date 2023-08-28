@@ -72,18 +72,18 @@
   }
 }
 .select-option.available {
-  border: 1px solid #7fc008;
+  border: 1px solid $tertiary-color;
   padding: 1px 12px;
   border-radius: 4px;
 }
 
 .select-option.sold-out {
-  border: 1px solid #db303f;
+  border: 1px solid $quaternary-color;
   padding: 1px 12px;
   border-radius: 4px;
 }
 .quantity-column {
-  border: 1px solid #dfe2e9;
+  border: 1px solid $border-color;
   padding: 1px 12px;
   border-radius: 4px;
 }
