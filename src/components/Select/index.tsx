@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, memo } from 'react';
 
 interface SelectProps {
   children: React.ReactNode;
@@ -27,4 +27,4 @@ const Select = ({
   );
 };
 
-export default Select;
+export default memo(Select);

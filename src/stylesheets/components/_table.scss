@@ -20,3 +20,28 @@ table th {
 table tr:nth-child(even) {
   background-color: $background-color;
 }
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination button {
+  border: none;
+  background-color: $background-color;
+  color: $background-color-button;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button.active {
+  background-color: $background-color-button;
+  color: $primary-color;
+}
+
+.pagination button:hover {
+  background-color: $background-color;
+}
