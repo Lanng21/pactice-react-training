@@ -1,3 +1,24 @@
 {
-  "products": []
+  "products": [
+    {
+      "name": "Nguyen  Thi  Mai Lan",
+      "quantity": 0,
+      "price": 0,
+      "status": "sold-out",
+      "type": "clothing",
+      "brand": "ddd",
+      "brandImage": "ssss",
+      "id": 1693230003807
+    },
+    {
+      "name": "fggfgfgfg",
+      "quantity": "19",
+      "price": 0,
+      "status": "sold-out",
+      "type": "clothing",
+      "brand": "11212",
+      "brandImage": "121212",
+      "id": 1693232167466
+    }
+  ]
 }
