@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // hooks
 import { useProductContext } from '../../hooks/ProductContext';
@@ -9,9 +9,13 @@ import Table from '../../components/Table';
 import DeleteConfirmModal from '../../components/DeleteConfirmModal';
 import DeleteSuccessModal from '../../components/DeleteSuccessModal';
 import AddProduct from './components/AddProduct';
+import Tag from '../../components/Tag';
 
 // types
 import { IProduct } from '../../types/Product';
+
+// icons
+import Action from '../../assets/images/icons8-more.svg';
 
 const Home = () => {
   const { products, addProduct, updateProduct, deleteProduct } =
@@ -25,6 +29,25 @@ const Home = () => {
     useState(false);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const [showDropdownProductId, setShowDropdownProductId] = useState<
+    number | null
+  >(null);
+
+  const handleEllipsisClick = useCallback(
+    (productId: number) => {
+      setShowDropdown(!showDropdown);
+      setShowDropdownProductId(productId);
+    },
+    [showDropdown],
+  );
+
+  const closeDropdown = useCallback(() => {
+    setShowDropdown(false);
+    setShowDropdownProductId(null);
+  }, []);
 
   const handleConfirmDelete = useCallback(() => {
     setIsDeleteConfirmationModalOpen(false);
@@ -60,67 +83,101 @@ const Home = () => {
     [addProduct, closeModal, selectedProduct, updateProduct],
   );
 
-  const handleEdit = useCallback((product: IProduct) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  }, []);
-
-  const columns = useMemo(
-    () => [
-      {
-        key: 'name',
-        header: 'Product',
-        render: (product: IProduct) => product.name,
-      },
-      {
-        key: 'status',
-        header: 'Status',
-        render: (product: IProduct) => product.status,
-      },
-      {
-        key: 'type',
-        header: 'Type',
-        render: (product: IProduct) => product.type,
-      },
-      {
-        key: 'quantity',
-        header: 'Quantity',
-        render: (product: IProduct) => product.quantity,
-      },
-      {
-        key: 'brand',
-        header: 'Brand',
-        render: (product: IProduct) => product.brand,
-      },
-      {
-        key: 'price',
-        header: 'Price',
-        render: (product: IProduct) => product.price,
-      },
-      {
-        key: 'action',
-        header: 'Action',
-        render: (product: IProduct) => (
-          <div className="action-buttons">
-            <Button onClick={() => handleEdit(product)}>edit</Button>
-            <Button
-              onClick={() => {
-                setSelectedProduct(product);
-                setIsDeleteConfirmationModalOpen(true);
-              }}
-            >
-              delete
-            </Button>
-          </div>
-        ),
-      },
-    ],
-    [handleEdit],
+  const handleEdit = useCallback(
+    (product: IProduct) => {
+      setSelectedProduct(product);
+      setIsModalOpen(true);
+      closeDropdown();
+    },
+    [closeDropdown],
   );
+
+  const columns = [
+    {
+      key: 'name',
+      header: 'Product',
+    },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (product: IProduct) => <Tag status={product.status} />,
+    },
+    {
+      key: 'type',
+      header: 'Type',
+    },
+    {
+      key: 'quantity',
+      header: 'Quantity',
+      render: (product: IProduct) => (
+        <span className="quantity">{product.quantity}</span>
+      ),
+    },
+    {
+      key: 'brand',
+      header: 'Brand',
+    },
+    {
+      key: 'price',
+      header: 'Price',
+    },
+    {
+      key: 'action',
+      header: 'Action',
+      render: (product: IProduct) => (
+        <div className="action-buttons">
+          <Button
+            className="ellipsis-button"
+            onClick={() => handleEllipsisClick(product.id)}
+          >
+            <span className="ellipsis-icon">
+              <img src={Action} alt="action" />
+            </span>
+          </Button>
+          {showDropdown && showDropdownProductId === product.id && (
+            <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`}>
+              <Button
+                className="edit-button"
+                onClick={() => {
+                  handleEdit(product);
+                  closeDropdown();
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                className="delete-button"
+                onClick={() => {
+                  setSelectedProduct(product);
+                  setIsDeleteConfirmationModalOpen(true);
+                  closeDropdown();
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+          )}
+          <div
+            className="backdrop"
+            tabIndex={0}
+            role="button"
+            onClick={closeDropdown}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === 'Space') {
+                closeDropdown();
+              }
+            }}
+          >
+            {' '}
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="container">
-      <h1 className="title">Management</h1>
+      <h1 className="title-home">Management</h1>
       <div className="button-add">
         <Button onClick={openModal}>Add new product</Button>
       </div>
@@ -140,7 +197,7 @@ const Home = () => {
       {isSuccessModalOpen && (
         <DeleteSuccessModal onClose={() => setIsSuccessModalOpen(false)} />
       )}
-      <Table columns={columns} data={products} />
+      <Table columns={columns} data={products} itemsPerPage={5} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import ModalForm from '../../../../components/Form';
@@ -8,6 +8,9 @@ import Select from '../../../../components/Select';
 
 // Types
 import { IProduct } from '../../../../types/Product';
+
+// Utils
+import validateForm from '../../../../utils/validate';
 
 interface AddProductProps {
   onSubmit: (formData: IProduct) => void;
@@ -41,6 +44,8 @@ const AddProduct = ({
     onClose();
   }, [onClose]);
 
+  const isEditing = useMemo(() => !!selectedProduct, [selectedProduct]);
+
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
@@ -53,12 +58,18 @@ const AddProduct = ({
   );
 
   const handleSubmit = useCallback(() => {
-    onSubmit(formData);
-    onClose();
-  }, [onSubmit, formData, onClose]);
+    const errors = validateForm(formData);
+    if (Object.keys(errors).length === 0) {
+      onSubmit(formData);
+      onClose();
+    }
+  }, [formData, onSubmit, onClose]);
 
   return (
-    <ModalForm onClose={onClose} title="Add new product">
+    <ModalForm
+      onClose={onClose}
+      title={isEditing ? 'Product Information' : 'Add New Product'}
+    >
       <form onSubmit={handleSubmit}>
         <Input
           label="Name"
@@ -96,6 +107,9 @@ const AddProduct = ({
             value={formData.status}
             onChange={handleInputChange}
           >
+            <option value="" disabled>
+              Select Status
+            </option>
             <option value="available" className="select-option available">
               Available
             </option>
@@ -111,6 +125,9 @@ const AddProduct = ({
             value={formData.type}
             onChange={handleInputChange}
           >
+            <option value="" disabled>
+              Select Type
+            </option>
             <option value="electronic">Electronic</option>
             <option value="clothing">Clothing</option>
           </Select>
