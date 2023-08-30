@@ -23,6 +23,7 @@ const AddProduct = ({
   onClose,
   selectedProduct,
 }: AddProductProps) => {
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState<IProduct>({
     name: '',
     quantity: 0,
@@ -62,6 +63,8 @@ const AddProduct = ({
     if (Object.keys(errors).length === 0) {
       onSubmit(formData);
       onClose();
+    } else {
+      setFormErrors(errors);
     }
   }, [formData, onSubmit, onClose]);
 
@@ -77,6 +80,7 @@ const AddProduct = ({
           name="name"
           type="text"
           value={formData.name}
+          error={formErrors.name}
           onChange={handleInputChange}
         />
 
@@ -87,6 +91,7 @@ const AddProduct = ({
           name="quantity"
           type="number"
           value={formData.quantity}
+          error={formErrors.quantity}
           onChange={handleInputChange}
         />
 
@@ -96,6 +101,7 @@ const AddProduct = ({
           name="price"
           type="number"
           value={formData.price}
+          error={formErrors.price}
           onChange={handleInputChange}
         />
 
@@ -106,6 +112,7 @@ const AddProduct = ({
             name="status"
             value={formData.status}
             onChange={handleInputChange}
+            error={formErrors.status}
           >
             <option value="" disabled>
               Select Status
@@ -124,6 +131,7 @@ const AddProduct = ({
             name="type"
             value={formData.type}
             onChange={handleInputChange}
+            error={formErrors.type}
           >
             <option value="" disabled>
               Select Type
@@ -140,6 +148,7 @@ const AddProduct = ({
             value={formData.brand}
             onChange={handleInputChange}
             type="text"
+            error={formErrors.brand}
           />
           <Input
             label="Brand Image"
@@ -148,6 +157,7 @@ const AddProduct = ({
             value={formData.brandImage}
             onChange={handleInputChange}
             type="text"
+            error={formErrors.brandImage}
           />
         </div>
         <div className="button">

@@ -27,6 +27,14 @@ const validateForm = (formData: IProduct): FormErrors => {
     errors.type = 'Type is required';
   }
 
+  if (!formData.brand) {
+    errors.brand = 'brand is required';
+  }
+
+  if (!formData.brandImage) {
+    errors.brandImage = 'brandImage is required';
+  }
+
   return errors;
 };
 

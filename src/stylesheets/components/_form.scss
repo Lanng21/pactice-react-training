@@ -1,6 +1,11 @@
 @use '../abstracts/' as *;
 
 .modal-form {
+  .error-message {
+    color: $quaternary-color;
+    font-size: 12px;
+    font-weight: 700;
+  }
   .header-form {
     display: flex;
     justify-content: space-between;
@@ -45,12 +50,18 @@
         font-size: 16px;
       }
     }
+    .brandImage {
+      width: 100%;
+    }
     .brand {
       display: flex;
       flex-direction: row;
       gap: 10px;
       label {
-        width: 50%;
+        width: 100%;
+      }
+      input {
+        width: 100%;
       }
     }
     .button {
