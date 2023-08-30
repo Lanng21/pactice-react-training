@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // hooks
 import { useProductContext } from '../../hooks/ProductContext';
@@ -92,10 +93,35 @@ const Home = () => {
     [closeDropdown],
   );
 
+  const handleRowClick = useCallback(
+    (productId: number) => {
+      const foundProduct = products.find(
+        (product: IProduct) => product.id === productId,
+      );
+      setSelectedProduct(foundProduct || null);
+    },
+    [products],
+  );
+
   const columns = [
     {
-      key: 'name',
+      key: 'product',
       header: 'Product',
+      render: (product: IProduct) => (
+        <Link
+          to={`/detail/${product.id}`}
+          onClick={() => handleRowClick(product.id)}
+        >
+          <div className="product-cell">
+            <img
+              src={product.brandImage}
+              alt={product.name}
+              className="product-image table-image"
+            />
+            <span className="product-name">{product.name}</span>
+          </div>
+        </Link>
+      ),
     },
     {
       key: 'status',
@@ -157,19 +183,6 @@ const Home = () => {
               </Button>
             </div>
           )}
-          <div
-            className="backdrop"
-            tabIndex={0}
-            role="button"
-            onClick={closeDropdown}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === 'Space') {
-                closeDropdown();
-              }
-            }}
-          >
-            {' '}
-          </div>
         </div>
       ),
     },

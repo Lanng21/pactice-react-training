@@ -6,6 +6,7 @@ interface SelectProps {
   id: string;
   name: string;
   value: string;
+  error?: string;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -15,6 +16,7 @@ const Select = ({
   id,
   name,
   value,
+  error,
   onChange,
 }: SelectProps) => {
   return (
@@ -23,8 +25,13 @@ const Select = ({
       <select id={id} name={name} value={value} onChange={onChange}>
         {children}
       </select>
+      {error && <span className="error-message">{error}</span>}
     </label>
   );
+};
+
+Select.defaultProps = {
+  error: '',
 };
 
 export default memo(Select);
