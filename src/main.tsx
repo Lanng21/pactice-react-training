@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ProductProvider } from './hooks/ProductContext';
+import { ProductProvider } from './hooks/UseProductContext';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.scss';
