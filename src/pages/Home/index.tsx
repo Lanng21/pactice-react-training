@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // hooks
-import { useProductContext } from '../../hooks/ProductContext';
+import { useProductContext } from '../../hooks/UseProductContext';
 
 // components
 import Button from '../../components/Button';
@@ -37,13 +37,18 @@ const Home = () => {
     number | null
   >(null);
 
-  const handleEllipsisClick = useCallback(
-    (productId: number) => {
-      setShowDropdown(!showDropdown);
-      setShowDropdownProductId(productId);
-    },
-    [showDropdown],
-  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
+
+  const handleEllipsisClick = useCallback((productId: number) => {
+    setShowDropdown((prevShowDropdown) => !prevShowDropdown);
+    setShowDropdownProductId(productId);
+  }, []);
 
   const closeDropdown = useCallback(() => {
     setShowDropdown(false);
@@ -103,90 +108,100 @@ const Home = () => {
     [products],
   );
 
-  const columns = [
-    {
-      key: 'product',
-      header: 'Product',
-      render: (product: IProduct) => (
-        <Link
-          to={`/detail/${product.id}`}
-          onClick={() => handleRowClick(product.id)}
-        >
-          <div className="product-cell">
-            <img
-              src={product.brandImage}
-              alt={product.name}
-              className="product-image table-image"
-            />
-            <span className="product-name">{product.name}</span>
-          </div>
-        </Link>
-      ),
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      render: (product: IProduct) => <Tag status={product.status} />,
-    },
-    {
-      key: 'type',
-      header: 'Type',
-    },
-    {
-      key: 'quantity',
-      header: 'Quantity',
-      render: (product: IProduct) => (
-        <span className="quantity">{product.quantity}</span>
-      ),
-    },
-    {
-      key: 'brand',
-      header: 'Brand',
-    },
-    {
-      key: 'price',
-      header: 'Price',
-    },
-    {
-      key: 'action',
-      header: 'Action',
-      render: (product: IProduct) => (
-        <div className="action-buttons">
-          <Button
-            className="ellipsis-button"
-            onClick={() => handleEllipsisClick(product.id)}
+  const columns = useMemo(
+    () => [
+      {
+        key: 'product',
+        header: 'Product',
+        render: (product: IProduct) => (
+          <Link
+            to={`/detail/${product.id}`}
+            onClick={() => handleRowClick(product.id)}
           >
-            <span className="ellipsis-icon">
-              <img src={Action} alt="action" />
-            </span>
-          </Button>
-          {showDropdown && showDropdownProductId === product.id && (
-            <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`}>
-              <Button
-                className="edit-button"
-                onClick={() => {
-                  handleEdit(product);
-                  closeDropdown();
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                className="delete-button"
-                onClick={() => {
-                  setSelectedProduct(product);
-                  setIsDeleteConfirmationModalOpen(true);
-                  closeDropdown();
-                }}
-              >
-                Delete
-              </Button>
+            <div className="product-cell">
+              <img
+                src={product.brandImage}
+                alt={product.name}
+                className="product-image table-image"
+              />
+              <span className="product-name">{product.name}</span>
             </div>
-          )}
-        </div>
-      ),
-    },
-  ];
+          </Link>
+        ),
+      },
+      {
+        key: 'status',
+        header: 'Status',
+        render: (product: IProduct) => <Tag status={product.status} />,
+      },
+      {
+        key: 'type',
+        header: 'Type',
+      },
+      {
+        key: 'quantity',
+        header: 'Quantity',
+        render: (product: IProduct) => (
+          <span className="quantity">{product.quantity}</span>
+        ),
+      },
+      {
+        key: 'brand',
+        header: 'Brand',
+      },
+      {
+        key: 'price',
+        header: 'Price',
+      },
+      {
+        key: 'action',
+        header: 'Action',
+        render: (product: IProduct) => (
+          <div className="action-buttons">
+            <Button
+              className="ellipsis-button"
+              onClick={() => handleEllipsisClick(product.id)}
+            >
+              <span className="ellipsis-icon">
+                <img src={Action} alt="action" />
+              </span>
+            </Button>
+            {showDropdown && showDropdownProductId === product.id && (
+              <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`}>
+                <Button
+                  className="edit-button"
+                  onClick={() => {
+                    handleEdit(product);
+                    closeDropdown();
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  className="delete-button"
+                  onClick={() => {
+                    setSelectedProduct(product);
+                    setIsDeleteConfirmationModalOpen(true);
+                    closeDropdown();
+                  }}
+                >
+                  Delete
+                </Button>
+              </div>
+            )}
+          </div>
+        ),
+      },
+    ],
+    [
+      handleRowClick,
+      showDropdown,
+      showDropdownProductId,
+      handleEllipsisClick,
+      handleEdit,
+      closeDropdown,
+    ],
+  );
 
   return (
     <div className="container">
@@ -194,25 +209,33 @@ const Home = () => {
       <div className="button-add">
         <Button onClick={openModal}>Add new product</Button>
       </div>
-      {isModalOpen && (
-        <AddProduct
-          onClose={closeModal}
-          onSubmit={handleSubmit}
-          selectedProduct={selectedProduct as IProduct}
-        />
+      {isLoading ? (
+        <div className="loading-container">
+          <div className="loading-spinner" aria-label="Loading" />
+        </div>
+      ) : (
+        <>
+          {isModalOpen && (
+            <AddProduct
+              onClose={closeModal}
+              onSubmit={handleSubmit}
+              selectedProduct={selectedProduct as IProduct}
+            />
+          )}
+          {isDeleteConfirmationModalOpen && (
+            <DeleteConfirmModal
+              onClose={() => setIsDeleteConfirmationModalOpen(false)}
+              onConfirm={handleConfirmDelete}
+            />
+          )}
+          {isSuccessModalOpen && (
+            <DeleteSuccessModal onClose={() => setIsSuccessModalOpen(false)} />
+          )}
+          <Table columns={columns} data={products} itemsPerPage={5} />
+        </>
       )}
-      {isDeleteConfirmationModalOpen && (
-        <DeleteConfirmModal
-          onClose={() => setIsDeleteConfirmationModalOpen(false)}
-          onConfirm={handleConfirmDelete}
-        />
-      )}
-      {isSuccessModalOpen && (
-        <DeleteSuccessModal onClose={() => setIsSuccessModalOpen(false)} />
-      )}
-      <Table columns={columns} data={products} itemsPerPage={5} />
     </div>
   );
 };
 
-export default Home;
+export default memo(Home);

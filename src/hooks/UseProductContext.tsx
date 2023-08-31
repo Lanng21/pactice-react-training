@@ -65,7 +65,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     async (newProduct: IProduct) => {
       try {
         await createProduct(newProduct);
-        setProducts((prevProducts) => [...prevProducts, newProduct]);
+        setProducts((prevProducts) => [newProduct, ...prevProducts]);
       } catch (error) {
         throw new Error('Failed to create product');
       }
@@ -77,11 +77,10 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     async (updatedProduct: IProduct) => {
       try {
         await updateProductOnServer(updatedProduct);
-        setProducts((prevProducts) =>
-          prevProducts.map((product) =>
-            product.id === updatedProduct.id ? updatedProduct : product,
-          ),
-        );
+        setProducts((prevProducts) => [
+          updatedProduct,
+          ...prevProducts.filter((product) => product.id !== updatedProduct.id),
+        ]);
       } catch (error) {
         throw new Error('Failed to update product');
       }

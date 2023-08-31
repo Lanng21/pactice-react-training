@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 // components
 import DetailForm from './components/FormDetailPage';
 
 // hooks
-import { useProductContext } from '../../hooks/ProductContext';
+import { useProductContext } from '../../hooks/UseProductContext';
 
 // types
 import { IProduct } from '../../types/Product';
@@ -43,4 +43,4 @@ const ProductDetailPage: React.FC = () => {
   );
 };
 
-export default ProductDetailPage;
+export default memo(ProductDetailPage);

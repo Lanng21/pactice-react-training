@@ -8,6 +8,7 @@ interface IInputProps {
   name: string;
   label: string;
   error?: string;
+  placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -20,6 +21,7 @@ const Input = ({
   label,
   error,
   onChange,
+  placeholder,
 }: IInputProps) => {
   return (
     <div className="input-container">
@@ -32,6 +34,7 @@ const Input = ({
           name={name}
           value={value}
           onChange={onChange}
+          placeholder={placeholder}
         />
       </label>
       {error && <span className="error-message">{error}</span>}
@@ -42,6 +45,7 @@ const Input = ({
 Input.defaultProps = {
   className: '',
   error: '',
+  placeholder: '',
 };
 
 export default memo(Input);

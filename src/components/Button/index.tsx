@@ -5,15 +5,24 @@ interface ButtonProps {
   size?: 'large' | 'medium' | 'small';
   kind?: 'primary' | 'secondary' | 'error';
   className?: string;
+  disabled?: boolean;
   onClick: () => void;
 }
 
-const Button = ({ children, size, kind, className, onClick }: ButtonProps) => {
+const Button = ({
+  children,
+  size,
+  kind,
+  className,
+  onClick,
+  disabled,
+}: ButtonProps) => {
   return (
     <button
       className={`${size} ${kind} ${className}`}
       type="button"
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -25,6 +34,7 @@ Button.defaultProps = {
   kind: 'primary',
   className: '',
   children: '',
+  disabled: false,
 };
 
 export default memo(Button);

@@ -22,16 +22,8 @@ Install the dependencies and devDependencies and start the server.
 create file .env
 
 ```sh
-BASE_URL=http://localhost:5000
+VITE_API_BASE_URL=https://64ef260c219b3e2873c4056b.mockapi.io/api/Product/product
 ```
-
-New terminal:
-
-```sh
-json-server --wath db.json --port 5000
-```
-
-And anothor terminal:
 
 Installation:
 

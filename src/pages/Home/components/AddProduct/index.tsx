@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import ModalForm from '../../../../components/Form';
@@ -23,29 +23,34 @@ const AddProduct = ({
   onClose,
   selectedProduct,
 }: AddProductProps) => {
+  const initialFormData = useMemo(
+    () => ({
+      name: '',
+      quantity: 0,
+      price: '$',
+      status: '',
+      type: '',
+      brand: '',
+      brandImage: '',
+      id: 0,
+    }),
+    [],
+  );
+  const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [formData, setFormData] = useState<IProduct>({
-    name: '',
-    quantity: 0,
-    price: 0,
-    status: '',
-    type: '',
-    brand: '',
-    brandImage: '',
-    id: 0,
-  });
+  const [formData, setFormData] = useState<IProduct>(initialFormData);
 
   useEffect(() => {
     if (selectedProduct) {
       setFormData(selectedProduct);
+    } else {
+      setFormData(initialFormData);
     }
-  }, [selectedProduct]);
+  }, [selectedProduct, initialFormData]);
 
   const handleCancelClick = useCallback(() => {
     onClose();
   }, [onClose]);
-
-  const isEditing = useMemo(() => !!selectedProduct, [selectedProduct]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -61,8 +66,12 @@ const AddProduct = ({
   const handleSubmit = useCallback(() => {
     const errors = validateForm(formData);
     if (Object.keys(errors).length === 0) {
-      onSubmit(formData);
-      onClose();
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        onSubmit(formData);
+        onClose();
+      }, 1500);
     } else {
       setFormErrors(errors);
     }
@@ -71,7 +80,7 @@ const AddProduct = ({
   return (
     <ModalForm
       onClose={onClose}
-      title={isEditing ? 'Product Information' : 'Add New Product'}
+      title={selectedProduct ? 'Product Information' : 'Add New Product'}
     >
       <form onSubmit={handleSubmit}>
         <Input
@@ -90,6 +99,7 @@ const AddProduct = ({
           className="select-option quantity"
           name="quantity"
           type="number"
+          placeholder="0"
           value={formData.quantity}
           error={formErrors.quantity}
           onChange={handleInputChange}
@@ -99,7 +109,8 @@ const AddProduct = ({
           label="Price"
           id="price"
           name="price"
-          type="number"
+          type="text"
+          placeholder="$0.00"
           value={formData.price}
           error={formErrors.price}
           onChange={handleInputChange}
@@ -164,8 +175,13 @@ const AddProduct = ({
           <Button kind="primary" className="cancel" onClick={handleCancelClick}>
             Cancel
           </Button>
-          <Button kind="secondary" className="submit" onClick={handleSubmit}>
-            Confirm
+          <Button
+            kind="secondary"
+            className="submit"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Submitting...' : 'Confirm'}
           </Button>
         </div>
       </form>
@@ -173,4 +189,4 @@ const AddProduct = ({
   );
 };
 
-export default AddProduct;
+export default memo(AddProduct);

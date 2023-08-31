@@ -1,49 +1,48 @@
-import React, { ReactNode, memo, useEffect, useRef } from 'react';
-
-// components
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import Button from '../Button';
-
-// icons
 import Clear from '../../assets/images/x-close.svg';
 import Delete from '../../assets/images/Featured icon.png';
 
 interface ModalFormProps {
-  children: ReactNode;
+  children: React.ReactNode;
   onClose: () => void;
   title?: string;
   showDeleteImage?: boolean;
 }
 
 const ModalForm = ({
-  title,
+  title = '',
   children,
   onClose,
   showDeleteImage = false,
 }: ModalFormProps) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
+  const handleEscape = useCallback(
+    (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
-    };
+    },
+    [onClose],
+  );
 
+  useEffect(() => {
     window.addEventListener('keydown', handleEscape);
     return () => {
       window.removeEventListener('keydown', handleEscape);
     };
-  }, [onClose]);
-
-  const handleCancelClick = () => {
-    onClose();
-  };
+  }, [handleEscape]);
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === modalRef.current) {
       onClose();
     }
   };
+
+  const handleCancelClick = useCallback(() => {
+    onClose();
+  }, [onClose]);
 
   return (
     <div

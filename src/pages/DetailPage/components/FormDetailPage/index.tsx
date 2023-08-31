@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 
 // types
 import { IProduct } from '../../../../types/Product';
@@ -24,6 +24,7 @@ const DetailForm: React.FC<DetailFormProps> = ({
 }) => {
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState<IProduct>(product);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -39,7 +40,11 @@ const DetailForm: React.FC<DetailFormProps> = ({
   const handleFormSubmit = useCallback(() => {
     const errors = validateForm(formData);
     if (Object.keys(errors).length === 0) {
-      onSubmit(formData);
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        onSubmit(formData);
+      }, 1500);
     } else {
       setFormErrors(errors);
     }
@@ -144,8 +149,9 @@ const DetailForm: React.FC<DetailFormProps> = ({
               kind="secondary"
               className="submit"
               onClick={handleFormSubmit}
+              disabled={isLoading}
             >
-              Save
+              {isLoading ? 'Submitting...' : 'Save'}
             </Button>
           </div>
         </form>
@@ -162,4 +168,4 @@ const DetailForm: React.FC<DetailFormProps> = ({
   );
 };
 
-export default DetailForm;
+export default memo(DetailForm);
