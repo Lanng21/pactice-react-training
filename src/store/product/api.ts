@@ -29,7 +29,8 @@ export const deleteProductFromServer = async (
   productId: number,
 ): Promise<void> => {
   try {
-    await api.delete(`${productId}`);
+    const response = await api.delete(`${productId}`);
+    return response.data;
   } catch (error) {
     throw new Error('Failed to delete product');
   }
@@ -39,7 +40,8 @@ export const updateProductOnServer = async (
   product: IProduct,
 ): Promise<void> => {
   try {
-    await api.put(`${product.id}`, product);
+    const response = await api.put(`${product.id}`, product);
+    return response.data;
   } catch (error) {
     throw new Error('Failed to delete product');
   }

@@ -6,7 +6,7 @@ interface IInputProps {
   value: string | number;
   type: string;
   name: string;
-  label: string;
+  label?: string;
   error?: string;
   placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -46,6 +46,7 @@ Input.defaultProps = {
   className: '',
   error: '',
   placeholder: '',
+  label: '',
 };
 
 export default memo(Input);
