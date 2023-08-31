@@ -15,13 +15,8 @@ const validateForm = (formData: IProduct): FormErrors => {
     errors.quantity = 'Quantity must be a positive number';
   }
 
-  if (!formData.price) {
-    errors.price = 'Price is required';
-  } else {
-    const pricePattern = /^\$\d+(\.\d{2})?$/;
-    if (!pricePattern.test(formData.price)) {
-      errors.price = 'Invalid price format';
-    }
+  if (formData.price < 0) {
+    errors.price = 'Quantity must be a positive number';
   }
 
   if (!formData.status) {

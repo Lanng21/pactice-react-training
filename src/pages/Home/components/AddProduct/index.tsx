@@ -27,7 +27,7 @@ const AddProduct = ({
     () => ({
       name: '',
       quantity: 0,
-      price: '$',
+      price: 0,
       status: '',
       type: '',
       brand: '',
@@ -109,8 +109,8 @@ const AddProduct = ({
           label="Price"
           id="price"
           name="price"
-          type="text"
-          placeholder="$0.00"
+          type="number"
+          placeholder="0"
           value={formData.price}
           error={formErrors.price}
           onChange={handleInputChange}

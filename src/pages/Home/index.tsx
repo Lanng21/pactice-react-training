@@ -152,6 +152,7 @@ const Home = () => {
       {
         key: 'price',
         header: 'Price',
+        render: ({ price }) => <span>{`$${price}`} </span>,
       },
       {
         key: 'action',
