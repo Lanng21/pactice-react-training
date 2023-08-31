@@ -7,32 +7,20 @@ const api = axios.create({
 });
 
 export const fetchProducts = async (): Promise<IProduct[]> => {
-  try {
-    const response = await api.get('/');
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to fetch product');
-  }
+  const response = await api.get('/');
+  return response.data;
 };
 export const createProduct = async (
   productData: IProduct,
 ): Promise<IProduct> => {
-  try {
-    const response = await api.post('/', productData);
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to create product');
-  }
+  const response = await api.post('/', productData);
+  return response.data;
 };
 
 export const deleteProductFromServer = async (
   productId: number,
 ): Promise<void> => {
-  try {
-    await api.delete(`${productId}`);
-  } catch (error) {
-    throw new Error('Failed to delete product');
-  }
+  await api.delete(`${productId}`);
 };
 
 export const updateProductOnServer = async (

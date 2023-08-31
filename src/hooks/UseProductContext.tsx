@@ -19,6 +19,13 @@ import {
 // types
 import { IProduct } from '../types/Product';
 
+import Notification from '../components/Notification/index';
+import {
+  MESSAGE_NOTIFICATION_ERROR,
+  MESSAGE_NOTIFICATION_SUCCESS,
+  Type,
+} from '../constant/notification';
+
 interface ProductProviderProps {
   children: ReactNode;
 }
@@ -47,6 +54,10 @@ export const useProductContext = () => {
 
 export const ProductProvider = ({ children }: ProductProviderProps) => {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [notification, setNotification] = useState<{
+    type: string;
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +65,10 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         const productsData = await fetchProducts();
         setProducts(productsData);
       } catch (error) {
-        throw new Error('Failed to fetch products');
+        setNotification({
+          type: Type.Error,
+          message: MESSAGE_NOTIFICATION_ERROR.GET_PRODUCTS,
+        });
       }
     };
 
@@ -66,8 +80,15 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
       try {
         await createProduct(newProduct);
         setProducts((prevProducts) => [newProduct, ...prevProducts]);
+        setNotification({
+          type: Type.Success,
+          message: MESSAGE_NOTIFICATION_SUCCESS.ADD_PRODUCT,
+        });
       } catch (error) {
-        throw new Error('Failed to create product');
+        setNotification({
+          type: Type.Error,
+          message: MESSAGE_NOTIFICATION_ERROR.ADD_PRODUCT,
+        });
       }
     },
     [setProducts],
@@ -78,11 +99,19 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
       try {
         await updateProductOnServer(updatedProduct);
         setProducts((prevProducts) => [
-          updatedProduct,
-          ...prevProducts.filter((product) => product.id !== updatedProduct.id),
+          ...prevProducts.map((product) =>
+            product.id === updatedProduct.id ? updatedProduct : product,
+          ),
         ]);
+        setNotification({
+          type: Type.Success,
+          message: MESSAGE_NOTIFICATION_SUCCESS.UPDATE_PRODUCT,
+        });
       } catch (error) {
-        throw new Error('Failed to update product');
+        setNotification({
+          type: Type.Error,
+          message: MESSAGE_NOTIFICATION_ERROR.UPDATE_PRODUCT,
+        });
       }
     },
     [setProducts],
@@ -96,7 +125,10 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
           prevProducts.filter((product) => product.id !== productId),
         );
       } catch (error) {
-        throw new Error('Failed to delete product');
+        setNotification({
+          type: Type.Error,
+          message: MESSAGE_NOTIFICATION_ERROR.DELETE_PRODUCT,
+        });
       }
     },
     [setProducts],
@@ -114,6 +146,13 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
   return (
     <ProductContext.Provider value={contextValue}>
+      {notification && (
+        <Notification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
       {children}
     </ProductContext.Provider>
   );
