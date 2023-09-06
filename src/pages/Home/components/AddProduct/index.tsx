@@ -36,6 +36,7 @@ const AddProduct = ({
     }),
     [],
   );
+
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState<IProduct>(initialFormData);

@@ -22,6 +22,9 @@ const Home = () => {
   const { products, addProduct, updateProduct, deleteProduct } =
     useProductContext();
 
+  const MemoizedTable = React.memo(Table);
+  // const MemoizedForm = React.memo(AddProduct);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -232,7 +235,7 @@ const Home = () => {
           {isSuccessModalOpen && (
             <DeleteSuccessModal onClose={() => setIsSuccessModalOpen(false)} />
           )}
-          <Table columns={columns} data={products} itemsPerPage={5} />
+          <MemoizedTable columns={columns} data={products} itemsPerPage={5} />
         </>
       )}
     </div>

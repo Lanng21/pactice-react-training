@@ -83,7 +83,7 @@ const Table = ({ columns, data, itemsPerPage }: TableProps) => {
   };
 
   return (
-    <div>
+    <div className="table-container">
       <table>
         <thead>
           <tr>

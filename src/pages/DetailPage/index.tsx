@@ -25,7 +25,7 @@ const ProductDetailPage: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   return (
