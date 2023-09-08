@@ -1,5 +1,9 @@
 import React, { memo, useCallback } from 'react';
+
+// components
 import Button from '../Button';
+
+// icon
 import Clear from '../../assets/images/x-close.svg';
 import Delete from '../../assets/images/Featured icon.png';
 
